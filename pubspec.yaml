@@ -1,0 +1,15 @@
+name: aoc2021
+
+environment:
+  sdk: ">=2.14.4 <3.0.0"
+
+executables:
+  aoc2021: aoc2021
+
+dependencies:
+  equatable: 2.0.3
+  path: 1.8.0
+
+dev_dependencies:
+  test: 1.19.5
+  very_good_analysis: 2.4.0
