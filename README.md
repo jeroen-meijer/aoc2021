@@ -6,6 +6,8 @@
 
 A Dart project that contains all my solutions for the Advent of Code 2021 challenges.
 
+Learn more about Advent of Code 2021 at [adventofcode.com](https://adventofcode.com/2021).
+
 ### Usage
 
 To run all assignments:
