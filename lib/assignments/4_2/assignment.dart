@@ -1,14 +1,14 @@
 import 'package:aoc2021/helpers/helpers.dart';
 
-final assignment4_1 = Assignment<int>(
-  id: 'Day 4 Part 1',
-  name: 'Giant Squid - Part 1',
-  answer: 22680,
+final assignment4_2 = Assignment<int>(
+  id: 'Day 4 Part 2',
+  name: 'Giant Squid - Part 2',
+  answer: 16168,
   fn: _run,
 );
 
 int _run() {
-  final data = getAssignmentData('4_1').map((line) => line).toList();
+  final data = getAssignmentData('4_2').map((line) => line).toList();
 
   final drawData = data.first;
   final draws = drawData.split(',').map(int.parse).toList();
@@ -22,38 +22,58 @@ int _run() {
     boardData = boardData.skip(5);
   }
 
-  late final BingoBoard winningBoard;
-
-  late Set<int> lastDraws;
+  late BingoBoard lastWinningBoard;
+  late Set<int> lastWinningDraws;
 
   for (var i = 5; i < draws.length; i++) {
-    lastDraws = draws.take(i).toSet();
-    print('Drawing numbers: ${lastDraws.join(', ')}');
-    final winningBoardIndex =
-        boards.indexWhere((board) => board.checkHasMatch(lastDraws));
+    final currentDraws = draws.take(i).toSet();
+    print('Drawing numbers: ${currentDraws.join(', ')}');
 
-    if (winningBoardIndex != -1) {
-      winningBoard = boards[winningBoardIndex];
-      print('Winning board found:\n$winningBoard');
-      break;
+    final currentWinningBoards =
+        boards.where((board) => board.checkHasMatch(currentDraws));
+
+    if (currentWinningBoards.isNotEmpty) {
+      lastWinningBoard = currentWinningBoards.last;
+      lastWinningDraws = currentDraws;
+      boards.removeWhere(currentWinningBoards.contains);
     }
   }
 
-  final winningDraw = lastDraws.last;
+  final lastWinningDraw = lastWinningDraws.last;
 
-  print('Winning draw: $winningDraw');
+  print('Last winning draw: $lastWinningDraw');
 
-  final winningBoardNumbers = winningBoard.flattenData().toSet();
-  final unmarkedNumberSum =
-      winningBoardNumbers.difference(lastDraws).reduce((acc, cur) => acc + cur);
+  final lastWinningBoardNumbers = lastWinningBoard.flattenData().toSet();
+  final unmarkedNumberSum = lastWinningBoardNumbers
+      .difference(lastWinningDraws)
+      .reduce((acc, cur) => acc + cur);
 
   print('Unmarked number sum: $unmarkedNumberSum');
 
-  final score = unmarkedNumberSum * winningDraw;
+  final score = unmarkedNumberSum * lastWinningDraw;
 
-  print('Winning board score: $score');
+  print('Last winning board score: $score');
 
   return score;
+}
+
+/// {@template winning_draw_boards}
+/// Contains a drawn number and all the respective boards that match the drawn
+/// number sequence as a result of that draw.
+/// {@endtemplate}
+class WinningDrawBoards {
+  /// {@macro winning_draw_boards}
+  const WinningDrawBoards({
+    required this.draw,
+    required this.boards,
+  });
+
+  /// The number that prompted the [boards] to match.
+  final int draw;
+
+  /// The [BingoBoard]s that have matched as a result of the [draw] number
+  /// being drawn.
+  final List<BingoBoard> boards;
 }
 
 /// {@template bingo_board}
