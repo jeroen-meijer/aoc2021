@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:aoc2021/helpers/helpers.dart';
-import 'package:path/path.dart' as path;
 
 final assignment1_2 = Assignment<int>(
   id: 'Day 1 Part 2',
@@ -13,15 +10,8 @@ final assignment1_2 = Assignment<int>(
 const _kWindowSize = 3;
 
 int _run() {
-  final dirPath = path.join(
-    Directory.current.path,
-    'lib',
-    'assignments',
-    '1_2',
-  );
-  final file = File(path.join(dirPath, 'data.txt'));
-  final lines = file.readAsLinesSync();
-  final data = lines.map((line) => int.parse(line.trim())).toList();
+  final data =
+      getAssignmentData('1_2').map((line) => int.parse(line.trim())).toList();
 
   final windows = <int>[];
 

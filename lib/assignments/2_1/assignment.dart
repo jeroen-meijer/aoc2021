@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:aoc2021/helpers/helpers.dart';
-import 'package:path/path.dart' as path;
 
 final assignment2_1 = Assignment<int>(
   id: 'Day 2 Part 1',
@@ -11,16 +8,9 @@ final assignment2_1 = Assignment<int>(
 );
 
 int _run() {
-  final dirPath = path.join(
-    Directory.current.path,
-    'lib',
-    'assignments',
-    '2_1',
-  );
-  final file = File(path.join(dirPath, 'data.txt'));
-  final lines = file.readAsLinesSync();
-  final instructions =
-      lines.map((line) => MovementInstruction.parse(line)).toList();
+  final instructions = getAssignmentData('2_1')
+      .map((line) => MovementInstruction.parse(line))
+      .toList();
 
   var offset = const Offset(0, 0);
   for (final instruction in instructions) {

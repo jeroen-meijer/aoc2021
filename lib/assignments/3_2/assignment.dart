@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:aoc2021/helpers/helpers.dart';
-import 'package:path/path.dart' as path;
 
 final assignment3_2 = Assignment<int>(
   id: 'Day 3 Part 2',
@@ -15,15 +13,7 @@ const bitLength = 12;
 final mask = ('1' * bitLength).asBinary;
 
 int _run() {
-  final dirPath = path.join(
-    Directory.current.path,
-    'lib',
-    'assignments',
-    '3_2',
-  );
-  final file = File(path.join(dirPath, 'data.txt'));
-  final lines = file.readAsLinesSync();
-  final data = lines.map((line) => line.asBinary).toList();
+  final data = getAssignmentData('3_2').map((line) => line.asBinary).toList();
 
   final oxygenRating = getByteByBitCriterium(data, keepMostCommon: true);
   final co2Rating = getByteByBitCriterium(data, keepMostCommon: false);

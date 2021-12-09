@@ -8,7 +8,7 @@
       "name": "Run assignments",
       "request": "launch",
       "type": "dart",
-      "program": "bin/advent.dart"
+      "program": "bin/aoc2021.dart"
       // "args": ["2"]
     },
     {
