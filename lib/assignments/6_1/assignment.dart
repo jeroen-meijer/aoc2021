@@ -31,6 +31,13 @@ class GrowthSimulation {
   /// {@template growth_simulation}
   GrowthSimulation(this.entities);
 
+  /// How many ticks every entity survives until they respawn and generate a new
+  /// entity alongside.
+  static const lifespan = 7;
+
+  /// The lifespan of any entity that is spawned while a [tick] happens.
+  static const newEntityLifespan = 8;
+
   /// The current list of entities.
   ///
   /// Each [int] represents the days until the entity's timer will reset and
@@ -53,13 +60,13 @@ class GrowthSimulation {
     var bornCount = 0;
     for (var i = 0; i < entities.length; i++) {
       if (entities[i] == 0) {
-        entities[i] = 6;
+        entities[i] = lifespan - 1;
         bornCount++;
       } else {
         entities[i]--;
       }
     }
-    entities.addAll(List.generate(bornCount, (_) => 8));
+    entities.addAll(List.generate(bornCount, (_) => newEntityLifespan));
 
     _ticks++;
   }
