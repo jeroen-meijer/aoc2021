@@ -17,9 +17,8 @@ int _run() {
   final simulation = AdvancedGrowthSimulation(data);
   print(simulation);
 
-  throw UnimplementedError(
-    'Too difficult. Current solution exceeds memory or reasonable runtime.',
-  );
+  // 'Too difficult. Current solution exceeds memory or reasonable runtime.',
+  return noAnswer();
 
   // await simulation.run(256);
   // print(simulation);

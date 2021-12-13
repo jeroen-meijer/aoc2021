@@ -29,7 +29,13 @@ void runAssignment(Assignment assignment) {
 
   final result = assignment.result;
   print('Took: ${result.runtime.inMicroseconds / 1000} ms');
-  if (result.error != null) {
+  if (!result.didAnswer) {
+    print('❌ FAILURE! (Did not answer)');
+    if (result.output.isNotEmpty) {
+      print('Full output:');
+      print(_indent(result.output.join('\n'), trim: false));
+    }
+  } else if (result.error != null) {
     print('❌ FAILURE!');
     print(_indent('${result.error}'));
     if (result.output.isNotEmpty) {
