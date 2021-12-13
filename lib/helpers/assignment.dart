@@ -1,9 +1,28 @@
 import 'dart:async';
 
+/// Returns a value that represents the absence of an answer to an assignment.
+///
+/// **Only call and return this value while running an assignment.**
+/// Calling this multiple times or outside of an assignment execution will
+/// result in a [StateError].
 T noAnswer<T>() {
-  AssignmentResult._didAnswerCurrentAssignment = false;
+  final didAnswer = AssignmentResult._didAnswerCurrentAssignment;
+  final isRunningAssignment = didAnswer != null;
+  final alreadyAnswered = didAnswer == false;
 
-  if (T == int) {
+  if (!isRunningAssignment) {
+    throw StateError('noAnswer() called when no assignment was being run.');
+  } else if (alreadyAnswered) {
+    throw StateError('noAnswer() called more than once.');
+  } else {
+    AssignmentResult._didAnswerCurrentAssignment = false;
+  }
+
+  return _noAnswerValue<T>();
+}
+
+T _noAnswerValue<T>() {
+  if (T == int || T == num) {
     return -1 as T;
   } else if (T == double) {
     return -1.0 as T;
@@ -92,7 +111,14 @@ class AssignmentResult<T> {
 
     late final AssignmentResult<T> ar;
 
-    if (!_didAnswerCurrentAssignment) {
+    if (!_didAnswerCurrentAssignment!) {
+      if (value != _noAnswerValue<T>()) {
+        throw StateError(
+          'Assignment was instructed to give no answer, but returned value '
+          'is not the no-answer token. When not giving an answer, be sure to '
+          'return the value given by "noAnswer()".',
+        );
+      }
       ar = AssignmentResult.didNotAnswer(
         runtime: sw.elapsed,
         output: output,
@@ -111,10 +137,12 @@ class AssignmentResult<T> {
       );
     }
 
+    _didAnswerCurrentAssignment = null;
+
     return ar;
   }
 
-  static var _didAnswerCurrentAssignment = false;
+  static bool? _didAnswerCurrentAssignment;
 
   final Duration runtime;
   final List<String> output;

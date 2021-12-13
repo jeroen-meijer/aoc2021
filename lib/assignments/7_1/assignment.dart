@@ -3,7 +3,7 @@ import 'package:aoc2021/helpers/helpers.dart';
 final assignment7_1 = Assignment<int>(
   id: 'Day 7 Part 1',
   name: 'The Treachery of Whales - Part 1',
-  answer: null,
+  answer: 344138,
   fn: _run,
 );
 
