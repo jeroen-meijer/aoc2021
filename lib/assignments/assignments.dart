@@ -1,3 +1,4 @@
+import 'package:aoc2021/assignments/10_1/assignment.dart';
 import 'package:aoc2021/assignments/1_1/assignment.dart';
 import 'package:aoc2021/assignments/1_2/assignment.dart';
 import 'package:aoc2021/assignments/2_1/assignment.dart';
@@ -36,4 +37,5 @@ final assignments = [
   assignment8_2,
   assignment9_1,
   assignment9_2,
+  assignment10_1,
 ];
