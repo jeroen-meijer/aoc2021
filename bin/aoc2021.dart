@@ -30,7 +30,7 @@ void runAssignment(Assignment assignment) {
   final result = assignment.result;
   print('Took: ${result.runtime.inMicroseconds / 1000} ms');
   if (!result.didAnswer) {
-    print('❌ FAILURE! (Did not answer)');
+    print('⚠️ Did not answer.');
     if (result.output.isNotEmpty) {
       print('Full output:');
       print(_indent(result.output.join('\n'), trim: false));
