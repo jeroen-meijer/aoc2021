@@ -2,15 +2,15 @@ import 'dart:collection';
 
 import 'package:aoc2021/helpers/helpers.dart';
 
-final assignment10_1 = Assignment<int>(
-  id: 'Day 10 Part 1',
-  name: 'Syntax Scoring - Part 1',
-  answer: 339411,
+final assignment10_2 = Assignment<int>(
+  id: 'Day 10 Part 2',
+  name: 'Syntax Scoring - Part 2',
+  answer: 2289754624,
   fn: _run,
 );
 
 int _run() {
-  final data = getAssignmentData('10_1');
+  final data = getAssignmentData('10_2');
   // final data = [
   //   '[({(<(())[]>[[{[]{<()<>>',
   //   '[(()[<>])]({[<{<<[]>>(',
@@ -30,36 +30,44 @@ int _run() {
   final corruptLines = lines.where((l) => l.isCorrupt);
   print('Corrupt lines: ${corruptLines.length}');
 
-  final totalScore = corruptLines
+  final errorScore = corruptLines
       .map((l) => l.invalidChar!.score)
       .reduce((acc, cur) => acc + cur);
-  print('Total score: $totalScore');
+  print('Error score: $errorScore');
 
-  return totalScore;
+  final incompleteLines = lines.where((l) => l.isIncomplete);
+  print('Incomplete lines: ${incompleteLines.length}');
+
+  final completionScores =
+      incompleteLines.map((l) => l.completionData!.score).toList()..sort();
+  final medianCompletionScore = completionScores[completionScores.length ~/ 2];
+  print('Median completion score: $medianCompletionScore');
+
+  return medianCompletionScore;
 }
 
 class ChunkLine {
   const ChunkLine._({
     required this.data,
-    this.isComplete = true,
+    this.completionData,
     this.invalidChar,
   }) : assert(
-          isComplete || invalidChar == null,
+          completionData == null || invalidChar == null,
           'A chunk line cannot be both incomplete and corrupted.',
         );
 
   factory ChunkLine.parse(String data) {
     final chars = data.split('');
-    final charStack = Stack<String>();
+    final exitCharStack = Stack<String>();
 
     for (var i = 0; i < chars.length; i++) {
       final char = chars[i];
       final entryCharIndex = _entryChars.indexOf(char);
       if (entryCharIndex != -1) {
         final exitChar = _exitChars[entryCharIndex];
-        charStack.add(exitChar);
+        exitCharStack.add(exitChar);
       } else {
-        if (charStack.isEmpty) {
+        if (exitCharStack.isEmpty) {
           return ChunkLine._(
             data: data,
             invalidChar: InvalidChunkChar.unexpectedChar(
@@ -68,7 +76,7 @@ class ChunkLine {
             ),
           );
         } else {
-          final expectedChar = charStack.pop();
+          final expectedChar = exitCharStack.pop();
           if (char != expectedChar) {
             return ChunkLine._(
               data: data,
@@ -83,9 +91,13 @@ class ChunkLine {
       }
     }
 
+    final completionData = exitCharStack.isEmpty
+        ? null
+        : CompletionData(exitCharStack.toList().reversed.toList());
+
     return ChunkLine._(
       data: data,
-      isComplete: charStack.isEmpty,
+      completionData: completionData,
     );
   }
 
@@ -93,9 +105,10 @@ class ChunkLine {
   static const _exitChars = [')', ']', '}', '>'];
 
   final String data;
-  final bool isComplete;
+  final CompletionData? completionData;
   final InvalidChunkChar? invalidChar;
 
+  bool get isIncomplete => completionData != null;
   bool get isCorrupt => invalidChar != null;
 
   int get length => data.length;
@@ -130,6 +143,28 @@ class InvalidChunkChar {
   };
 
   int get score => _errorScoreMap[char]!;
+}
+
+class CompletionData {
+  const CompletionData(this.chars);
+
+  final List<String> chars;
+
+  static const _completionScoreMap = {
+    ')': 1,
+    ']': 2,
+    '}': 3,
+    '>': 4,
+  };
+
+  int get score {
+    var currentScore = 0;
+    for (final char in chars) {
+      currentScore *= 5;
+      currentScore += _completionScoreMap[char]!;
+    }
+    return currentScore;
+  }
 }
 
 class Stack<T> extends ListQueue<T> {
