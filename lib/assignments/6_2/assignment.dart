@@ -70,53 +70,6 @@ class AdvancedGrowthSimulation {
     _ticks += ticks;
   }
 
-  // void _runOldAlgorithm(int ticks) {
-  //   // final initialRollovers = (ticks ~/ lifespan) * length;
-  //   // final globalRemainder = ticks % lifespan;
-
-  //   final entityTickers = List.generate(
-  //     length,
-  //     (i) => EntityTickerPair(entities[i], ticks),
-  //   );
-
-  //   const printingInterval = Duration(milliseconds: 500);
-  //   var lastPrintTime = DateTime.fromMicrosecondsSinceEpoch(0);
-
-  //   for (var i = 0; i < entityTickers.length; i++) {
-  //     final shouldPrint =
-  //         lastPrintTime.difference(DateTime.now()).abs() >= printingInterval;
-  //     if (shouldPrint) {
-  //       lastPrintTime = DateTime.now();
-  //       final parsingPercentage = i / entityTickers.length;
-  //       print(
-  //         'Parsing '
-  //         '${(parsingPercentage * 100).toStringAsFixed(2).padLeft(6, '0')}% '
-  //         '($i/${entityTickers.length})',
-  //       );
-  //     }
-
-  //     while (entityTickers[i].ticksRemaining != 0) {
-  //       final etp = entityTickers[i];
-
-  //       final tick = etp.ticksRemaining;
-  //       final nextTick = tick - 1;
-
-  //       var tickedEntity = etp.entity - 1;
-
-  //       if (tickedEntity == -1) {
-  //         tickedEntity = lifespan - 1;
-  //         entityTickers.add(EntityTickerPair(newEntityLifespan, nextTick));
-  //       }
-
-  //       entityTickers[i] = EntityTickerPair(tickedEntity, nextTick);
-  //     }
-  //   }
-
-  //   entities
-  //     ..clear()
-  //     ..addAll(entityTickers.map((e) => e.entity));
-  // }
-
   Future<void> _runNewAlgorithm(int ticks) async {
     final entityTickers = List.generate(
       length,
@@ -144,20 +97,6 @@ class AdvancedGrowthSimulation {
         ]);
       }
     } while (processQueue.isNotEmpty);
-
-    // for (var i = 0; i < entityTickers.length; i++) {
-    //   final etp = entityTickers[i];
-    //   final rollover = await runAsIsolate<EntityTickerPair, EntityRollovers>(
-    //     calculateRolloverAsIsolate,
-    //     etp,
-    //   );
-
-    //   entityTickers.addAll([
-    //     for (final tick in rollover.rolloverTicks)
-    //       EntityTickerPair(newEntityLifespan, tick),
-    //   ]);
-    //   entityTickers[i] = EntityTickerPair(rollover.remainder, 0);
-    // }
 
     entities
       ..clear()
