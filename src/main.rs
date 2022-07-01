@@ -3,7 +3,7 @@ mod helpers;
 use assignments::get_assignments;
 
 fn throw_invalid_assignment_number_error() -> ! {
-    println!("Invalid assignment number.");
+    println!("Invalid &assignment number.");
     println!(
         "Usage: src/main.rs <assignment_number[1 through {}]>",
         get_assignments().len()
@@ -28,9 +28,41 @@ fn main() {
         Some(a) => a,
         None => throw_invalid_assignment_number_error(),
     };
-    match assignment.run() {
-        Ok(Some(answer)) => println!("{}", answer),
-        Ok(None) => println!("No answer"),
-        Err(e) => println!("Error: {}", e),
+
+    println!(
+        "Running assignment Day {} Part {}: {}",
+        assignment.day, assignment.part, assignment.description
+    );
+
+    let did_succeed = match assignment.run() {
+        Ok(None) => {
+            println!("No answer given.");
+            false
+        }
+        Err(e) => {
+            println!("Error while running assignment: {}", e);
+            false
+        }
+        Ok(Some(answer)) => {
+            println!("Answer given: {}", answer);
+            match assignment.answer {
+                None => {
+                    println!("No real answer to compare to.");
+                    false
+                }
+                Some(real_answer) => {
+                    println!("Real answer: {}", real_answer);
+                    answer == real_answer
+                }
+            }
+        }
+    };
+
+    let has_real_answer = assignment.answer != None;
+
+    if did_succeed {
+        println!("✅ Correct!");
+    } else if has_real_answer {
+        println!("❌ Wrong.");
     }
 }

@@ -6,7 +6,7 @@ pub fn get_assignment() -> Assignment {
         "1".to_string(),
         1,
         "Sonar Sweep".to_string(),
-        None,
+        Some(1655),
         _run,
     );
 }

@@ -1,11 +1,15 @@
 mod assignment_1_1;
+mod assignment_1_2;
 
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
 pub fn get_assignments() -> Vec<Assignment> {
-    return vec![assignment_1_1::get_assignment()];
+    return vec![
+        assignment_1_1::get_assignment(),
+        assignment_1_2::get_assignment(),
+    ];
 }
 
 pub struct Assignment {
