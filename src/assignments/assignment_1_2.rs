@@ -4,7 +4,7 @@ pub fn get_assignment() -> Assignment {
     return Assignment::new(
         "1_2".to_string(),
         "1".to_string(),
-        1,
+        2,
         "Sonar Sweep".to_string(),
         Some(1683),
         _run,
