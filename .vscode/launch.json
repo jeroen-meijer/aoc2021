@@ -15,7 +15,7 @@
           "kind": "bin"
         }
       },
-      "args": ["2"],
+      "args": [],
       "cwd": "${workspaceFolder}",
       "console": "internalConsole"
     },
