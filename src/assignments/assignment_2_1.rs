@@ -6,31 +6,57 @@ pub fn get_assignment() -> Assignment {
         "2".to_string(),
         1,
         "Dive!".to_string(),
-        None,
+        Some(1924923),
         _run,
     );
 }
 
 fn _run(data: Vec<String>) -> Option<i32> {
-    None
+    let position = _parse_instructions(data)
+        .iter()
+        .fold(Position { x: 0, y: 0 }, |pos, inst| {
+            match inst.command.as_str() {
+                "forward" => Position {
+                    x: pos.x + inst.units,
+                    y: pos.y,
+                },
+                "down" => Position {
+                    x: pos.x,
+                    y: pos.y + inst.units,
+                },
+                "up" => Position {
+                    x: pos.x,
+                    y: pos.y - inst.units,
+                },
+                _ => pos,
+            }
+        });
+
+    Some(position.x * position.y)
 }
 
-fn _create_windows(list: Vec<i32>, window_size: usize) -> Vec<Vec<i32>> {
-    assert_ne!(window_size, 0, "window_size cannot be 0");
+fn _parse_instructions(raw_lines: Vec<String>) -> Vec<Instruction> {
+    return raw_lines
+        .iter()
+        .map(|line| {
+            let mut parts = line.split(' ');
+            let command = parts.next().unwrap();
+            let units = parts.next().unwrap();
 
-    if list.len() < window_size {
-        return vec![list];
-    }
-
-    let mut windows: Vec<Vec<i32>> = vec![];
-
-    for i in 0..(list.len() - window_size + 1) {
-        let end_index = i + window_size;
-        let window = list[i..end_index].to_vec();
-        windows.push(window)
-    }
-
-    windows
+            Instruction {
+                command: command.to_string(),
+                units: units.parse::<i32>().unwrap(),
+            }
+        })
+        .collect();
 }
 
-struct Position {}
+struct Instruction {
+    command: String,
+    units: i32,
+}
+
+struct Position {
+    x: i32,
+    y: i32,
+}
