@@ -3,6 +3,8 @@ mod assignment_1_2;
 mod assignment_2_1;
 mod assignment_2_2;
 mod assignment_3_1;
+mod assignment_3_2;
+mod assignment_4_1;
 
 use std::fs::File;
 use std::io::{self, BufRead};
@@ -15,6 +17,8 @@ pub fn get_assignments() -> Vec<Assignment> {
         assignment_2_1::get_assignment(),
         assignment_2_2::get_assignment(),
         assignment_3_1::get_assignment(),
+        assignment_3_2::get_assignment(),
+        assignment_4_1::get_assignment(),
     ];
 }
 

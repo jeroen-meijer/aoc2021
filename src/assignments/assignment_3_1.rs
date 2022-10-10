@@ -1,5 +1,3 @@
-use std::thread::current;
-
 use super::Assignment;
 
 pub fn get_assignment() -> Assignment {

@@ -1,6 +1,10 @@
+extern crate stopwatch;
+
 mod assignments;
 mod helpers;
+
 use std::result;
+use stopwatch::Stopwatch;
 
 use assignments::get_assignments;
 
@@ -82,20 +86,26 @@ fn _run_single_assignment(n: i32) {
 fn _run_all_assignments() {
     for assignment in get_assignments() {
         let title = format!(
-            "{}. {} (Part {})",
+            "Day {}: {} (Part {})",
             assignment.day, assignment.description, assignment.part
         );
         let mut result_icon = "".to_string();
         let mut result_description = "".to_string();
 
-        match assignment.run() {
+        let mut sw = Stopwatch::start_new();
+        let run_result = assignment.run();
+        sw.stop();
+
+        let runtime = format!("{}ms", sw.elapsed_ms());
+
+        match run_result {
             Ok(None) => {
                 result_icon = "➖".to_string();
                 result_description = "No answer.".to_string();
             }
             Err(e) => {
                 result_icon = "⚠️".to_string();
-                result_description = "Error: {}".to_string();
+                result_description = format!("Error: {}", e).to_string();
             }
             Ok(Some(answer)) => {
                 let answer_string = format!("Answer given: {}", answer);
@@ -118,6 +128,9 @@ fn _run_all_assignments() {
             }
         };
 
-        println!("{} {} - {}", result_icon, title, result_description);
+        println!(
+            "{} {} - [{}] {}",
+            result_icon, title, runtime, result_description
+        );
     }
 }
