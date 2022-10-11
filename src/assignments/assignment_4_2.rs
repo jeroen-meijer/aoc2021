@@ -2,11 +2,11 @@ use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
     return Assignment::new(
-        "4_1".to_string(),
+        "4_2".to_string(),
         "4".to_string(),
-        1,
+        2,
         "Giant Squid".to_string(),
-        Some(38913),
+        Some(16836),
         _run,
     );
 }
@@ -33,33 +33,43 @@ fn _run(data: Vec<String>) -> Option<i32> {
         .map(|(i, board)| _calculate_win_sets_for_board(i, board))
         .collect::<Vec<_>>();
 
+    let mut winning_board_indices: Vec<usize> = vec![];
+    let mut last_winning_drawn_numbers: Option<Vec<i32>> = None;
+
     for i in BOARD_LENGTH..all_drawn_numbers.len() + 1 {
-        let current_drawn_numbers = &all_drawn_numbers[0..i].to_vec();
+        let current_drawn_numbers = &all_drawn_numbers[0..i];
 
-        // Check if any board's win sets contains the current drawn numbers.
-        // If so, calculate final score and return.
+        let boards_to_check = all_board_win_sets
+            .iter()
+            .filter(|b| !winning_board_indices.contains(&b.board_index))
+            .collect::<Vec<_>>();
 
-        for board in all_board_win_sets.iter() {
+        for board in boards_to_check {
             let has_match = board
                 .win_sets
                 .iter()
                 .any(|set| set.iter().all(|num| current_drawn_numbers.contains(num)));
 
             if has_match {
-                let unmarked_numbers_sum = boards[board.board_index]
-                    .iter()
-                    .flatten()
-                    .filter(|n| !current_drawn_numbers.contains(n))
-                    .sum::<i32>();
-
-                let last_drawn_number = current_drawn_numbers.last().unwrap();
-
-                return Some(unmarked_numbers_sum * last_drawn_number);
+                winning_board_indices.push(board.board_index);
+                last_winning_drawn_numbers = Some(current_drawn_numbers.to_vec());
             }
         }
     }
 
-    println!("No match found");
+    if let Some(index) = winning_board_indices.last() {
+        let numbers = last_winning_drawn_numbers.unwrap();
+
+        let unmarked_numbers_sum = boards[*index]
+            .iter()
+            .flatten()
+            .filter(|n| !numbers.contains(n))
+            .sum::<i32>();
+
+        let last_drawn_number = numbers.last().unwrap();
+
+        return Some(unmarked_numbers_sum * last_drawn_number);
+    }
 
     None
 }

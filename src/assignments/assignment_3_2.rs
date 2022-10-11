@@ -11,7 +11,7 @@ pub fn get_assignment() -> Assignment {
     );
 }
 
-fn _run(data: Vec<String>) -> Option<i32> {
+fn _run(_: Vec<String>) -> Option<i32> {
     //TODO: Implement
     None
 }

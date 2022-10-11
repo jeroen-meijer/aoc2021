@@ -3,7 +3,6 @@ extern crate stopwatch;
 mod assignments;
 mod helpers;
 
-use std::result;
 use stopwatch::Stopwatch;
 
 use assignments::get_assignments;
@@ -89,8 +88,8 @@ fn _run_all_assignments() {
             "Day {}: {} (Part {})",
             assignment.day, assignment.description, assignment.part
         );
-        let mut result_icon = "".to_string();
-        let mut result_description = "".to_string();
+        let result_icon: String;
+        let result_description: String;
 
         let mut sw = Stopwatch::start_new();
         let run_result = assignment.run();
