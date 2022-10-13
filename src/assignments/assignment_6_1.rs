@@ -2,7 +2,6 @@ use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
     return Assignment::new(
-        "6_1".to_string(),
         "6".to_string(),
         1,
         "Lanternfish".to_string(),
@@ -29,9 +28,9 @@ fn _run(data: Vec<String>) -> Option<i32> {
             .map(|x| {
                 if x == &0 {
                     new_subjects += 1;
-                    return 6;
+                    6
                 } else {
-                    return x - 1;
+                    x - 1
                 }
             })
             .collect::<Vec<_>>();

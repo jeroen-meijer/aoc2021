@@ -1,14 +1,7 @@
 use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
-    return Assignment::new(
-        "2_1".to_string(),
-        "2".to_string(),
-        1,
-        "Dive!".to_string(),
-        Some(1924923),
-        _run,
-    );
+    Assignment::new("2".to_string(), 1, "Dive!".to_string(), Some(1924923), _run)
 }
 
 fn _run(data: Vec<String>) -> Option<i32> {

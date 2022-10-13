@@ -4,7 +4,6 @@ use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
     return Assignment::new(
-        "5_2".to_string(),
         "5".to_string(),
         2,
         "Hydrothermal Venture".to_string(),
@@ -27,7 +26,7 @@ fn _run(data: Vec<String>) -> Option<i32> {
         }
     }
 
-    return Some(pos_map.values().filter(|x| x > &&1).count() as i32);
+    Some(pos_map.values().filter(|x| x > &&1).count() as i32)
 }
 
 fn _parse_line(data: &String) -> Line {
@@ -88,9 +87,9 @@ fn _interpolate_segment(line: Line) -> Vec<Pos> {
 
 fn _get_range(a: usize, b: usize) -> Vec<usize> {
     if a > b {
-        return (b..a + 1).rev().collect::<Vec<_>>();
+        (b..a + 1).rev().collect::<Vec<_>>()
     } else {
-        return (a..(b + 1)).collect::<Vec<_>>();
+        (a..(b + 1)).collect::<Vec<_>>()
     }
 }
 

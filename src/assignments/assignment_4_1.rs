@@ -2,7 +2,6 @@ use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
     return Assignment::new(
-        "4_1".to_string(),
         "4".to_string(),
         1,
         "Giant Squid".to_string(),
@@ -91,7 +90,7 @@ fn _create_boards(data: &Vec<String>) -> Vec<Board> {
         .map(|board_chunk| board_chunk.to_vec())
         .collect::<Vec<Board>>();
 
-    return boards;
+    boards
 }
 
 fn _calculate_win_sets_for_board(index: usize, board: &Board) -> BoardWinSets {

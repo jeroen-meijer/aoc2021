@@ -2,7 +2,6 @@ use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
     return Assignment::new(
-        "3_1".to_string(),
         "3".to_string(),
         1,
         "Binary Diagnostic".to_string(),

@@ -1,14 +1,13 @@
 use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
-    return Assignment::new(
-        "1_2".to_string(),
+    Assignment::new(
         "1".to_string(),
         2,
         "Sonar Sweep".to_string(),
         Some(1683),
         _run,
-    );
+    )
 }
 
 fn _run(data: Vec<String>) -> Option<i32> {

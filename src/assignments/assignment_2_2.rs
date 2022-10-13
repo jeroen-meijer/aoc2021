@@ -2,7 +2,6 @@ use super::Assignment;
 
 pub fn get_assignment() -> Assignment {
     return Assignment::new(
-        "2_2".to_string(),
         "2".to_string(),
         2,
         "Dive!".to_string(),

@@ -9,13 +9,16 @@ mod assignment_4_2;
 mod assignment_5_1;
 mod assignment_5_2;
 mod assignment_6_1;
+mod assignment_6_2;
+mod assignment_7_1;
 
+use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
 pub fn get_assignments() -> Vec<Assignment> {
-    return vec![
+    let assignments = vec![
         assignment_1_1::get_assignment(),
         assignment_1_2::get_assignment(),
         assignment_2_1::get_assignment(),
@@ -27,11 +30,36 @@ pub fn get_assignments() -> Vec<Assignment> {
         assignment_5_1::get_assignment(),
         assignment_5_2::get_assignment(),
         assignment_6_1::get_assignment(),
+        assignment_6_2::get_assignment(),
+        assignment_7_1::get_assignment(),
     ];
+
+    let id_counts = assignments
+        .iter()
+        .fold(HashMap::<String, u32>::new(), |mut acc, cur| {
+            *acc.entry(cur._get_id()).or_insert(0) += 1;
+            acc
+        });
+
+    let duplicate_entry_ids = id_counts
+        .iter()
+        .filter(|(_, count)| count > &&1)
+        .collect::<HashMap<_, _>>();
+
+    if !duplicate_entry_ids.is_empty() {
+        let duplicates_str = duplicate_entry_ids
+            .iter()
+            .map(|(id, count)| format!("  - Assignment {} shows up {} time(s)", id, count))
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        panic!("Duplicate assignment IDs were found:\n{}", duplicates_str);
+    }
+
+    assignments
 }
 
 pub struct Assignment {
-    pub id: String,
     pub day: String,
     pub part: i32,
     pub description: String,
@@ -43,7 +71,6 @@ type InternalAssignmentCallback = fn(data: Vec<String>) -> Option<i32>;
 
 impl Assignment {
     pub fn new(
-        id: String,
         day: String,
         part: i32,
         description: String,
@@ -51,7 +78,6 @@ impl Assignment {
         run: InternalAssignmentCallback,
     ) -> Assignment {
         return Assignment {
-            id,
             day,
             part,
             description,
@@ -60,14 +86,18 @@ impl Assignment {
         };
     }
 
+    fn _get_id(&self) -> String {
+        format!("{}_{}", self.day, self.part)
+    }
+
     pub fn run(&self) -> Result<Option<i32>, String> {
         // Reads the file <id>.txt and returns the contents as a vector of strings.
-        let path = format!("src/assignments/assignment_{}.txt", self.id);
+        let path = format!("src/assignments/assignment_{}.txt", self._get_id());
         let data = _read_lines(&path)
             .and_then(|lines| lines.collect::<Result<Vec<String>, io::Error>>())
             .map_err(|e| format!("Could not read file at {}\nError: {}", &path, e))?;
 
-        return Ok((self._f)(data));
+        Ok((self._f)(data))
     }
 }
 
