@@ -11,8 +11,9 @@ mod assignment_5_2;
 mod assignment_6_1;
 mod assignment_6_2;
 mod assignment_7_1;
+mod assignment_7_2;
 
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
@@ -32,6 +33,7 @@ pub fn get_assignments() -> Vec<Assignment> {
         assignment_6_1::get_assignment(),
         assignment_6_2::get_assignment(),
         assignment_7_1::get_assignment(),
+        assignment_7_2::get_assignment(),
     ];
 
     let id_counts = assignments
